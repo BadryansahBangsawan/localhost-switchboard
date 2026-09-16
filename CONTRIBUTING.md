@@ -2,6 +2,8 @@
 
 Thanks for improving Localhost Switchboard.
 
+End users install with `brew tap BadryansahBangsawan/mac-menu-apps` and `brew install --cask localhost-switchboard`. This file is for source contributors.
+
 ## Build
 
 macOS 14 or later and Swift 5.9+ (Xcode or Command Line Tools):
