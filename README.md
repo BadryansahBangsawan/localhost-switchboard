@@ -1,40 +1,56 @@
+<div align="center">
+
 # Localhost Switchboard
 
-See what is listening on localhost, open it, copy the URL, or kill the process — from the menu bar.
+**See all localhost listeners and open them in the browser from the menu bar.**  
+macOS menu extra — lives in the menu bar, no Dock icon.
 
-Menu extra for macOS 14+. It lives in the menu bar and does not show a Dock icon.
+<br/>
 
-## Features
+[![Latest Release](https://img.shields.io/github/v/release/BadryansahBangsawan/localhost-switchboard?style=flat-square&color=76B900&label=latest)](https://github.com/BadryansahBangsawan/localhost-switchboard/releases/latest)
+[![macOS](https://img.shields.io/badge/macOS-14%2B-black?style=flat-square&logo=apple)](https://github.com/BadryansahBangsawan/localhost-switchboard/releases/latest)
+[![Swift](https://img.shields.io/badge/Swift-5.9%2B-F05138?style=flat-square&logo=swift&logoColor=white)](https://swift.org)
 
-- Lists TCP listeners via `lsof` (port, command, host, pid).
-- Open in the browser, copy URL, send SIGTERM, or copy a `kill -9` command.
-- Pin ports so they stay visible.
-- Refresh every 1s, 2s, or 5s.
-- Optional hide of Apple system processes.
-- Optional confirm-before-kill.
+<br/>
 
-## Requirements
+</div>
 
-- macOS 14 Sonoma or later
-- Swift 5.9 or later
-- `/usr/sbin/lsof` (present on macOS)
+---
 
-## Install
+## Download
 
-Homebrew (macOS 14+):
+| Platform | File |
+|---|---|
+| **macOS** (Apple Silicon & Intel, macOS 14+) | `LocalhostSwitchboard-*-macos.zip` |
+
+[Go to Releases](https://github.com/BadryansahBangsawan/localhost-switchboard/releases/latest)
+
+---
+
+## Installation
+
+### Homebrew (recommended)
 
 ```bash
 brew tap BadryansahBangsawan/mac-menu-apps
 brew install --cask localhost-switchboard
 ```
 
-Opens as a menu extra (no Dock icon). The cask is ad-hoc signed. If Gatekeeper blocks it:
+A **Localhost Switchboard** icon appears in the menu bar. If Gatekeeper blocks it on first launch:
 
 ```bash
-xattr -cr /Applications/LocalhostSwitchboard.app
+xattr -cr /Applications/LocalhostSwitchboard.app && open /Applications/LocalhostSwitchboard.app
 ```
 
-Build from source:
+Or: right-click the app, Open, then Open again. Still blocked? **System Settings → Privacy & Security → Open Anyway**.
+
+### GitHub Releases
+
+1. Download `LocalhostSwitchboard-*-macos.zip` from [Releases](https://github.com/BadryansahBangsawan/localhost-switchboard/releases/latest)
+2. Unzip and drag **LocalhostSwitchboard** into Applications
+3. On first launch, run the xattr command above if Gatekeeper blocks it
+
+### Build from source
 
 ```bash
 git clone https://github.com/BadryansahBangsawan/localhost-switchboard.git
@@ -43,35 +59,20 @@ bash package-app.sh
 open dist/LocalhostSwitchboard.app
 ```
 
-Enable **Open at Login** from Settings if you want it after reboot.
+Requires Xcode Command Line Tools and Swift 5.9+.
 
-## Usage
+---
 
-- Click the network extra. Listeners appear as port + command.
-- **Open** uses the listener URL. **Kill** sends SIGTERM; **kill -9** copies the command instead of running it.
-- If `lsof` fails, stderr is shown as a red label.
+## Notes
 
-## Permissions
+– Polls lsof to detect listening TCP ports.
+– Click any port to open http://localhost:<port> in the default browser.
+– No Dock icon; lives entirely in the menu bar.
 
-- No special TCC permission. Killing a process you do not own will fail and show the error.
+---
 
-Denied permissions must not crash the app. You should see a banner and a button to open System Settings.
+<div align="center">
 
-## Privacy
+Made with ♥ for developers who prefer staying in the flow.
 
-No network of its own. It only reads `lsof` output and runs `kill` when you click Kill. Pinned ports are stored locally.
-
-Bundle ID: `engineer.badry.localhostswitchboard`.
-
-## Development
-
-```bash
-swift build
-swift build -c release --product LocalhostSwitchboard
-```
-
-Layout: `Sources/` (SwiftPM executable), `Info.plist`, `Assets/AppIcon.icns`, `package-app.sh`.
-
-## License
-
-[MIT](LICENSE)
+</div>
