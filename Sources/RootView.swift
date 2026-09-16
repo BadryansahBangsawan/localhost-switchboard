@@ -5,9 +5,8 @@ struct RootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            TextField("Filter", text: $store.filter)
-                .textFieldStyle(.roundedBorder)
+        VStack(alignment: .leading, spacing: FunTheme.sectionSpacing) {
+            ExtraSearchField(title: "Filter", prompt: "port or command", text: $store.filter)
 
             if let persistenceError = store.persistenceError {
                 Label(persistenceError, systemImage: "exclamationmark.triangle.fill")
@@ -22,15 +21,24 @@ struct RootView: View {
             }
 
             if store.visibleListeners.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("No listening TCP ports")
-                    Button("Refresh") {
-                        store.refresh()
-                    }
+                if store.filter.isEmpty {
+                    ExtraEmptyState(
+                        title: "No listeners",
+                        detail: "No listening TCP ports.",
+                        actionTitle: "Refresh",
+                        action: { store.refresh() }
+                    )
+                } else {
+                    ExtraEmptyState(
+                        title: "No matches",
+                        detail: "No listeners for “\(store.filter)”.",
+                        actionTitle: "Clear filter",
+                        action: { store.filter = "" }
+                    )
                 }
             } else {
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    LazyVStack(alignment: .leading, spacing: FunTheme.innerSpacing) {
                         ForEach(store.visibleListeners) { listener in
                             ListenerRow(
                                 listener: listener,
@@ -41,18 +49,18 @@ struct RootView: View {
                                 onKill: { store.killListener(listener) },
                                 onPin: { store.togglePin(port: listener.port) }
                             )
-                            Divider()
                         }
                     }
                 }
                 .frame(maxHeight: 480)
             }
+
+            ExtraSettingsFooter()
         }
-        .funPanel()
-        .background(.regularMaterial)
         .animation(reduceMotion ? nil : FunTheme.spring, value: store.visibleListeners)
         .animation(reduceMotion ? nil : FunTheme.spring, value: store.filter)
         .animation(reduceMotion ? nil : FunTheme.spring, value: store.errorMessage)
+        .funPanel()
     }
 }
 
@@ -97,7 +105,7 @@ private struct ListenerRow: View {
             .controlSize(.small)
             .buttonStyle(.bordered)
         }
-        .padding(.vertical, 6)
+        .extraRowSurface()
         .contextMenu {
             Button("Open", action: onOpen)
             Button("Copy URL", action: onCopyURL)
