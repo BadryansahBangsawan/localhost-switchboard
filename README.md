@@ -65,9 +65,10 @@ Requires Xcode Command Line Tools and Swift 5.9+.
 
 ## Notes
 
-– Polls lsof to detect listening TCP ports.
+– Polls lsof to detect listening TCP ports. The menu refreshes automatically each time you open it, so newly started servers appear without a manual restart.
 – Click any port to open http://localhost:<port> in the default browser.
 – No Dock icon; lives entirely in the menu bar.
+– Only ports bound to `127.0.0.1` or `::1` are listed — externally exposed listeners on `0.0.0.0` are excluded.
 
 ---
 
